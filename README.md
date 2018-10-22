@@ -28,3 +28,14 @@ ISLR
 #' rpackage: mgcv for generalized additive model
 #' better than package GAM
 ```
+
+
+```
+#' mgcv package for cross validation
+#' How to pick knots: 100 knots equally spaced wrt percentiles ->
+#' a lot of columns ->
+#' forward selection
+#' 
+#' regression tree: single step ahead optimality
+#' bagging, boosting, random forests
+```
