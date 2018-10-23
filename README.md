@@ -39,3 +39,54 @@ ISLR
 #' regression tree: single step ahead optimality
 #' bagging, boosting, random forests
 ```
+
+```
+set.seed(0)
+library(ISLR)
+data("Wage")
+maxcut<-20
+cvlabel<-sample(as.numeric(cut(1:nrow(Wage),5)))
+ncutcv<-rep(0,maxcut)
+for(ncut in 2:maxcut){
+  for(leave in 1:10){
+    stepfit<-lm(wage~cut(age,ncut),data=Wage[cvlabel!=leave,])
+    pred<-predict(stepfit,newdata=Wage[cvlabel==leave,c("wage","age")])
+    ncutcv[ncut]<-ncutcv[ncut]+sum((pred-Wage$wage[cvlabel==leave])^2)
+  }
+}
+ncut<-which.min(ncutcv)
+deg
+stepfit<-lm(wage~step(age,deg),data=Wage)
+od<-order(Wage$age)
+plot(wage~age,data=Wage,col="coral")
+lines(Wage$age[od],stepfit$fitted.values[od])
+
+
+#' Splines
+#' 
+#' ## B-spline
+#' library(splines)
+#' bs(age,knots=c(25,40,60))
+#' bs(age,df=6)
+#' 
+#' ## smoothing spline
+#' smooth.spline(age,wage,df=16)
+#'
+#' ## natural splines
+#' ns(year ,4)
+#' 
+#' 
+
+library(gam)
+summary(gam(Outstate ~ Private + s(Room.Board, df = 2) + s(PhD, df = 2) + s(perc.alumni, df = 2) + s(Expend, df = 5) + s(Grad.Rate, df = 2), data=College))
+
+
+
+
+selectedvars<-names(coef(regfit,which.min(regsummary$bic)))[-1]
+paste(paste("s(",selectedvars,",df=2)",sep=""),collapse="+")
+
+names(College)
+names(regsummary)
+
+```
