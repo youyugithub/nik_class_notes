@@ -90,3 +90,88 @@ names(College)
 names(regsummary)
 
 ```
+
+
+```
+
+set.seed(0)
+library(ISLR)
+data("Wage")
+maxdeg<-20
+polycv<-rep(0,maxdeg)
+library(boot)
+for(deg in 1:maxdeg){
+  polyfit<-glm(wage~poly(age,deg),data=Wage,family=gaussian())
+  polycv[deg]<-cv.glm(polyfit,data=Wage,K=10)$delta[1]
+}
+deg<-which.min(polycv)
+deg
+polyfit<-glm(wage~poly(age,deg),data=Wage,family=gaussian())
+od<-order(Wage$age)
+plot(wage~age,data=Wage,col="coral")
+lines(Wage$age[od],polyfit$fitted.values[od])
+
+
+set.seed(0)
+library(ISLR)
+data("Wage")
+maxdeg<-20
+cvlabel<-sample(as.numeric(cut(1:nrow(Wage),5)))
+polycv<-rep(0,maxdeg)
+for(deg in 1:maxdeg){
+  for(leave in 1:10){
+    polyfit<-lm(wage~poly(age,deg),data=Wage[cvlabel!=leave,])
+    pred<-predict(polyfit,newdata=Wage[cvlabel==leave,])
+    polycv[deg]<-polycv[deg]+sum((pred-Wage$wage[cvlabel==leave])^2)
+  }
+}
+deg<-which.min(polycv)
+deg
+polyfit<-glm(wage~poly(age,deg),data=Wage,family=gaussian())
+od<-order(Wage$age)
+plot(wage~age,data=Wage,col="coral")
+lines(Wage$age[od],polyfit$fitted.values[od])
+
+
+
+
+
+
+
+
+
+
+
+
+
+set.seed(1)
+library(ISLR)
+data("Wage")
+maxcut<-50
+cvlabel<-sample(as.numeric(cut(1:nrow(Wage),5)))
+ncutcv<-rep(0,maxcut)
+for(ncut in 1:maxcut){
+  for(leave in 1:10){
+    cutpoints<-unique(quantile(Wage$age[cvlabel!=leave],seq(0,1,length.out=ncut+1)))
+    cutpoints[1]<--Inf
+    cutpoints[length(cutpoints)]<-Inf
+    Wagetrain<-Wage[cvlabel!=leave,c("wage","age")]
+    Wagetrain$age<-cut(Wagetrain$age,cutpoints)
+    if(ncut>1){
+      stepfit<-lm(wage~age,data=Wagetrain)
+    }else{
+      stepfit<-lm(wage~1,data=Wagetrain)
+    }
+    Wagetest<-Wage[cvlabel==leave,c("wage","age")]
+    Wagetest$age<-cut(Wagetest$age,cutpoints)
+    pred<-predict(stepfit,newdata=Wagetest)
+    ncutcv[ncut]<-ncutcv[ncut]+sum((pred-Wage$wage[cvlabel==leave])^2)
+  }
+}
+ncut<-which.min(ncutcv)
+ncut
+stepfit<-lm(wage~cut(age,ncut),data=Wage)
+od<-order(Wage$age)
+plot(wage~age,data=Wage,col="coral")
+lines(Wage$age[od],stepfit$fitted.values[od])
+```
