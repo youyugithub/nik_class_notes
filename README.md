@@ -175,3 +175,49 @@ od<-order(Wage$age)
 plot(wage~age,data=Wage,col="coral")
 lines(Wage$age[od],stepfit$fitted.values[od])
 ```
+
+```
+#' 6 bootstrap data sets
+#'     z*(1) z*(2) z*(3) z*(4) z*(5) z*(6)
+#' i=1  *           *     *     *     *
+#' i=2        *           *     *
+#' i=3  *           *           *     *
+#' .
+#' .
+#' .
+#' i=n  *     *                 *     *
+#' 
+#' Suppose i=1,note (x1,y1) is not used in trees f*(2) f*(6), 
+#' Hence bag these trees and use this bag to predict y1
+#' (and compute test error across aggregating)
+#' Test bagging/OOB bagging
+#' 
+#' Out-of-Bag: observations not in the training
+#' 
+#' for a given i, approximately B/3 predictions will not have ith observation
+#' which we average 
+#' 
+#' this estimate is essentially the LOO cross-validation error for bagging if B is large
+#' 
+#' 
+#' Boosting algorithm
+#' 
+#' Fit a tree fb with d splits
+#' take a smaller multiple (lambda) of the tree we have grown 
+#' f(x)<-f(x)+lambda*fb(x)
+#' 
+#' gbm: gradient boosted model(machine)
+#' 
+#' tuning parameters for boosting: 
+#' B, number of trees
+#' lambda, shrinkage parameter, typically 0.01 or 0.001
+#' d, number of splits in each tree
+#' 
+#' 
+#' For each tree we record the total amount that the RSS is decreased due to splits over a given predictor
+#' importance
+#' For categorical, add up the total amount that the Gini index is decreased
+#' 
+#' Model comparison: leave one predictor out, and compare RSS/gini. This method is more computationally intensive
+#' 
+```
