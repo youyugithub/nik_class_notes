@@ -260,3 +260,42 @@ lines(Wage$age[od],stepfit$fitted.values[od])
 #' 
 #' 
 ```
+
+```
+#!/bin/sh
+#SBATCH --job-name=my_job
+#SBATCH --output=outfiles/my_job_%j.out
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=xxxxxxxxxxxxx
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --mem-per-cpu=1gb
+#SBATCH --time=1:00:00
+#SBATCH --qos=xxxxxxxxxxxx
+pwd;hostname;date
+
+cat /proc/cpuinfo | head
+module load gcc/5.2.0 R/3.2.2
+Rscript infiles/Code_${SLURM_ARRAY_TASK_ID}.R
+date
+```
+
+
+If you have 001,002,003,004....
+https://marylou.byu.edu/wiki/index.php?page=How+do+I+submit+a+large+number+of+very+similar+jobs%3F:
+```
+#!/bin/bash
+# submit_array.sh
+
+#SBATCH --ntasks=1
+#SBATCH --time=00:30:00
+#SBATCH --mem-per-cpu=1G
+#SBATCH --array=1-700
+
+# pad the task ID with leading zeros (to get 001, 002, etc.)
+CASE_NUM=`printf %03d $SLURM_ARRAY_TASK_ID`
+
+cd $SLURM_SUBMIT_DIR/case$CASE_NUM
+
+./runcase.sh
+```
