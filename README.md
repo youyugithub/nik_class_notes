@@ -221,3 +221,42 @@ lines(Wage$age[od],stepfit$fitted.values[od])
 #' Model comparison: leave one predictor out, and compare RSS/gini. This method is more computationally intensive
 #' 
 ```
+
+
+```
+#' download the package source 
+#' put it in your working directory on HPG2
+#' Create the directory /R in your working directory
+#' install by: R CMD
+#' 
+#' 
+#' multiple jobs directory R - contains any R packages
+#' directory infiles
+#' direcotry outfiles
+#' 
+#' sbatch command with array
+#' my_job_%j.out
+#' 
+#' sbatch --array=1-100%50 Run_job.job
+#' 
+#' For example "--array=0-15%4" will limit the number of simultaneously running tasks from this job array to 4.
+#' 
+#' 1-100 one to one hundred
+#' 50 each time
+#' 
+#' 
+#' cd /ufrc/bliznyuk/yhan2014
+#' 
+#' ISLR_1.2.tar.gc infiles, outfiles Template.R
+#' package: ISLR_1.2.tar.ge
+#' 
+#' sbatch --array 
+#' 
+#' 
+#' 
+#' caret package
+#' 
+#' library(caretNWS)
+#' 
+#' 
+```
