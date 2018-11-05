@@ -280,6 +280,19 @@ Rscript infiles/Code_${SLURM_ARRAY_TASK_ID}.R
 date
 ```
 
+```
+#A job array with index values between 0 and 31:
+#SBATCH --array=0-31
+
+#A job array with index values of 1, 2, 5, 19, 27:
+#SBATCH --array=1,2,5,19,27
+
+#A job array with index values between 1 and 7 with a step size of 2 (i.e. 1, 3, 5, 7):
+#SBATCH --array=1-7:2
+
+#A maximum number of simultaneously running tasks from the job array may be specified using a "%" separator. For example "--array=0-15%4" will limit the number of simultaneously running tasks from this job array to 4.
+```
+
 
 If you have 001,002,003,004....
 https://marylou.byu.edu/wiki/index.php?page=How+do+I+submit+a+large+number+of+very+similar+jobs%3F:
