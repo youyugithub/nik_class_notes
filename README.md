@@ -312,3 +312,10 @@ cd $SLURM_SUBMIT_DIR/case$CASE_NUM
 
 ./runcase.sh
 ```
+
+
+```
+#SBATCH --output=output_directory/%A_%a_%j.out
+```
+
+https://rcc.uchicago.edu/docs/running-jobs/array/index.html: The %A_%a construct in the output and error file names is used to generate unique output and error files based on the master job ID (%A) and the array-tasks ID (%a). In this fashion, each array-tasks will be able to write to its own output and error file.
